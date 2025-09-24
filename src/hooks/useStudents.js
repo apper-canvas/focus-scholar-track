@@ -33,11 +33,6 @@ try {
           apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
         });
 
-const { ApperClient } = window.ApperSDK;
-        const apperClient = new ApperClient({
-          apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
-          apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-        });
 
         await apperClient.functions.invoke(import.meta.env.VITE_SEND_STUDENT_WELCOME_EMAIL, {
           body: { studentData: newStudent },
