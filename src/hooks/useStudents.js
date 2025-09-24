@@ -20,10 +20,36 @@ export const useStudents = () => {
     }
   };
 
-  const createStudent = async (studentData) => {
+const createStudent = async (studentData) => {
     try {
       const newStudent = await studentsApi.create(studentData);
       setStudents(prev => [...prev, newStudent]);
+      
+      // Send welcome email to the student
+      try {
+        const { ApperClient } = window.ApperSDK;
+        const apperClient = new ApperClient({
+          apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+          apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+        });
+
+        await apperClient.functions.invoke(import.meta.env.VITE_SEND_STUDENT_WELCOME_EMAIL, {
+          body: JSON.stringify({ studentData: newStudent }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        // Show success message for email
+        const { toast } = await import('react-toastify');
+        toast.success(`Welcome email sent to ${newStudent.email}`);
+      } catch (emailError) {
+        console.error('Failed to send welcome email:', emailError);
+        // Show error message but don't fail the student creation
+        const { toast } = await import('react-toastify');
+        toast.warning(`Student created successfully, but welcome email could not be sent to ${newStudent.email}`);
+      }
+      
       return newStudent;
     } catch (err) {
       setError("Failed to create student");
