@@ -26,15 +26,15 @@ const createStudent = async (studentData) => {
       setStudents(prev => [...prev, newStudent]);
       
       // Send welcome email to the student
-      try {
+try {
         const { ApperClient } = window.ApperSDK;
         const apperClient = new ApperClient({
           apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
           apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
         });
 
-        await apperClient.functions.invoke(import.meta.env.VITE_SEND_STUDENT_WELCOME_EMAIL, {
-          body: JSON.stringify({ studentData: newStudent }),
+        await apperClient.functions.invoke('send-student-welcome-email', {
+          body: { studentData: newStudent },
           headers: {
             'Content-Type': 'application/json'
           }
