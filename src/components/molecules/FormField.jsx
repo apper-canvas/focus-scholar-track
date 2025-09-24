@@ -4,7 +4,7 @@ import Label from "@/components/atoms/Label";
 import Input from "@/components/atoms/Input";
 import Select from "@/components/atoms/Select";
 import Textarea from "@/components/atoms/Textarea";
-import ApperIcon from "@/components/atoms/ApperIcon";
+import ApperIcon from "@/components/ApperIcon";
 
 const FormField = ({ 
   label, 
