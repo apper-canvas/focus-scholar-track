@@ -1,0 +1,74 @@
+[
+  {
+    "Id": 1,
+    "name": "Algebra II",
+    "code": "MATH201",
+    "semester": "Spring 2024",
+    "credits": 3,
+    "enrolledStudents": [1, 2, 4, 8, 10]
+  },
+  {
+    "Id": 2,
+    "name": "Chemistry",
+    "code": "SCI301",
+    "semester": "Spring 2024",
+    "credits": 4,
+    "enrolledStudents": [3, 6, 11, 12]
+  },
+  {
+    "Id": 3,
+    "name": "World History",
+    "code": "HIST101",
+    "semester": "Spring 2024",
+    "credits": 3,
+    "enrolledStudents": [4, 7, 9]
+  },
+  {
+    "Id": 4,
+    "name": "Physics",
+    "code": "SCI401",
+    "semester": "Spring 2024",
+    "credits": 4,
+    "enrolledStudents": [1, 6, 8]
+  },
+  {
+    "Id": 5,
+    "name": "English Literature",
+    "code": "ENG301",
+    "semester": "Spring 2024",
+    "credits": 3,
+    "enrolledStudents": [2, 6, 9, 11]
+  },
+  {
+    "Id": 6,
+    "name": "Biology",
+    "code": "SCI201",
+    "semester": "Spring 2024",
+    "credits": 4,
+    "enrolledStudents": [5, 10, 12]
+  },
+  {
+    "Id": 7,
+    "name": "Spanish II",
+    "code": "LANG201",
+    "semester": "Spring 2024",
+    "credits": 3,
+    "enrolledStudents": [3, 7, 12]
+  },
+  {
+    "Id": 8,
+    "name": "Computer Science",
+    "code": "TECH301",
+    "semester": "Spring 2024",
+    "credits": 4,
+    "enrolledStudents": [2, 4, 8, 11]
+  },
+  {
+    "Id": 9,
+    "name": "Art Studio",
+    "code": "ART201",
+    "semester": "Spring 2024",
+    "credits": 2,
+    "enrolledStudents": [1, 5, 7, 9, 10]
+  }
+]

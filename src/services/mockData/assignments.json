@@ -1,0 +1,92 @@
+[
+  {
+    "Id": 1,
+    "title": "Algebra II Quiz 1",
+    "description": "Linear equations and graphing fundamentals",
+    "dueDate": "2024-01-25T23:59:00Z",
+    "maxPoints": 100,
+    "courseId": 1,
+    "type": "Quiz"
+  },
+  {
+    "Id": 2,
+    "title": "Chemistry Lab Report",
+    "description": "Analysis of chemical reactions and compound formation",
+    "dueDate": "2024-01-30T23:59:00Z",
+    "maxPoints": 150,
+    "courseId": 2,
+    "type": "Lab Report"
+  },
+  {
+    "Id": 3,
+    "title": "World History Essay",
+    "description": "Impact of the Industrial Revolution on society",
+    "dueDate": "2024-02-05T23:59:00Z",
+    "maxPoints": 100,
+    "courseId": 3,
+    "type": "Essay"
+  },
+  {
+    "Id": 4,
+    "title": "Physics Problem Set",
+    "description": "Motion and forces calculations",
+    "dueDate": "2024-01-28T23:59:00Z",
+    "maxPoints": 80,
+    "courseId": 4,
+    "type": "Homework"
+  },
+  {
+    "Id": 5,
+    "title": "English Literature Analysis",
+    "description": "Character development in Shakespeare's Hamlet",
+    "dueDate": "2024-02-10T23:59:00Z",
+    "maxPoints": 120,
+    "courseId": 5,
+    "type": "Essay"
+  },
+  {
+    "Id": 6,
+    "title": "Biology Exam",
+    "description": "Cell structure and function comprehensive test",
+    "dueDate": "2024-02-01T10:00:00Z",
+    "maxPoints": 200,
+    "courseId": 6,
+    "type": "Exam"
+  },
+  {
+    "Id": 7,
+    "title": "Geometry Proof Assignment",
+    "description": "Triangle congruence and similarity proofs",
+    "dueDate": "2024-01-27T23:59:00Z",
+    "maxPoints": 75,
+    "courseId": 1,
+    "type": "Homework"
+  },
+  {
+    "Id": 8,
+    "title": "Spanish Oral Presentation",
+    "description": "Cultural traditions presentation in Spanish",
+    "dueDate": "2024-02-08T00:00:00Z",
+    "maxPoints": 100,
+    "courseId": 7,
+    "type": "Presentation"
+  },
+  {
+    "Id": 9,
+    "title": "Computer Science Project",
+    "description": "Web application development using React",
+    "dueDate": "2024-02-15T23:59:00Z",
+    "maxPoints": 180,
+    "courseId": 8,
+    "type": "Project"
+  },
+  {
+    "Id": 10,
+    "title": "Art Portfolio Submission",
+    "description": "Collection of 5 original drawings or paintings",
+    "dueDate": "2024-02-12T23:59:00Z",
+    "maxPoints": 150,
+    "courseId": 9,
+    "type": "Portfolio"
+  }
+]
