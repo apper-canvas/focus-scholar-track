@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AuthContext } from "../../App";
 import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
+import Button from "@/components/atoms/Button";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { logout } = useContext(AuthContext);
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
   const navigation = [
     { name: "Students", href: "/", icon: "Users" },
     { name: "Grades", href: "/grades", icon: "BookOpen" },
-    { name: "Classes", href: "/classes", icon: "School" },
+    { name: "Classes", href: "/classes", icon: "GraduationCap" },
     { name: "Reports", href: "/reports", icon: "BarChart3" },
-    { name: "Settings", href: "/settings", icon: "Settings" }
+    { name: "Settings", href: "/settings", icon: "Settings" },
   ];
 
   const isActive = (href) => {
@@ -20,6 +25,14 @@ const Header = () => {
       return location.pathname === "/";
     }
     return location.pathname.startsWith(href);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   return (
@@ -37,23 +50,43 @@ const Header = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
-                  isActive(item.href)
-                    ? "bg-primary-50 text-primary-700 shadow-sm"
-                    : "text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
-                )}
-              >
-                <ApperIcon name={item.icon} size={16} />
-                <span>{item.name}</span>
-              </Link>
-            ))}
-          </nav>
+          <div className="hidden md:flex items-center space-x-1">
+            <nav className="flex space-x-1">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={cn(
+                    "flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                    isActive(item.href)
+                      ? "bg-primary-50 text-primary-700 shadow-sm"
+                      : "text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50"
+                  )}
+                >
+                  <ApperIcon name={item.icon} size={16} />
+                  <span>{item.name}</span>
+                </Link>
+              ))}
+            </nav>
+            
+            {/* User Info and Logout */}
+            {isAuthenticated && (
+              <div className="flex items-center space-x-3 ml-4 pl-4 border-l border-secondary-200">
+                <div className="text-sm text-secondary-600">
+                  Welcome, {user?.firstName || user?.name || 'User'}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="text-secondary-600 hover:text-secondary-900"
+                >
+                  <ApperIcon name="LogOut" size={16} className="mr-1" />
+                  Logout
+                </Button>
+              </div>
+            )}
+          </div>
 
           {/* Mobile menu button */}
           <button
@@ -64,7 +97,7 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 space-y-1 border-t border-secondary-200 bg-white">
             {navigation.map((item) => (
@@ -83,6 +116,24 @@ const Header = () => {
                 <span>{item.name}</span>
               </Link>
             ))}
+            
+            {/* Mobile User Info and Logout */}
+            {isAuthenticated && (
+              <div className="px-4 pt-3 mt-3 border-t border-secondary-200">
+                <div className="text-sm text-secondary-600 mb-3">
+                  Welcome, {user?.firstName || user?.name || 'User'}
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="text-secondary-600 hover:text-secondary-900 w-full justify-start"
+                >
+                  <ApperIcon name="LogOut" size={16} className="mr-2" />
+                  Logout
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
