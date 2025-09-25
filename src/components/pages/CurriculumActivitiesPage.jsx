@@ -4,7 +4,7 @@ import Header from '@/components/organisms/Header';
 import Button from '@/components/atoms/Button';
 import Input from '@/components/atoms/Input';
 import Select from '@/components/atoms/Select';
-import Card from '@/components/atoms/Card';
+import { Card } from '@/components/atoms/Card';
 import Badge from '@/components/atoms/Badge';
 import Label from '@/components/atoms/Label';
 import Textarea from '@/components/atoms/Textarea';
