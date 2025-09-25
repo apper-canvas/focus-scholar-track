@@ -75,15 +75,19 @@ const StudentsPage = () => {
     }
   };
 
-  const handleSaveStudent = async (studentData) => {
+const handleSaveStudent = async (studentData) => {
     try {
       if (selectedStudent) {
         await updateStudent(selectedStudent.Id, studentData);
+        toast.success("Student updated successfully");
       } else {
         await createStudent(studentData);
+        toast.success("Student created successfully");
       }
+      handleCloseModal();
     } catch (error) {
       console.error("Error saving student:", error);
+      toast.error("Failed to save student");
     }
   };
 

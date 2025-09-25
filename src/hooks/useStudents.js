@@ -25,6 +25,9 @@ const createStudent = async (studentData) => {
       const newStudent = await studentsApi.create(studentData);
       setStudents(prev => [...prev, newStudent]);
       
+      // Import toast for notifications
+      const { toast } = await import('react-toastify');
+      
       // Send welcome email to the student
       try {
         const { ApperClient } = window.ApperSDK;
@@ -40,12 +43,10 @@ const createStudent = async (studentData) => {
           }
         });
         // Show success message for email
-        const { toast } = await import('react-toastify');
         toast.success(`Welcome email sent to ${newStudent.email}`);
       } catch (emailError) {
         console.error('Failed to send welcome email:', emailError);
         // Show error message but don't fail the student creation
-        const { toast } = await import('react-toastify');
         toast.warning(`Student created successfully, but welcome email could not be sent to ${newStudent.email}`);
       }
 
@@ -65,12 +66,10 @@ const createStudent = async (studentData) => {
             }
           });
           // Show success message for science achievement email
-          const { toast } = await import('react-toastify');
           toast.success(`🎉 Science achievement email sent to ${newStudent.email} (Score: ${newStudent.scienceMarks}/100)`);
         } catch (achievementEmailError) {
           console.error('Failed to send science achievement email:', achievementEmailError);
           // Show error message but don't fail the student creation
-          const { toast } = await import('react-toastify');
           toast.warning(`Student created successfully, but science achievement email could not be sent to ${newStudent.email}`);
         }
       }
