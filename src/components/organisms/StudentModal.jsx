@@ -10,10 +10,11 @@ import { format } from "date-fns";
 
 const StudentModal = ({ isOpen, onClose, student, mode = "view", onSave }) => {
   const [formData, setFormData] = useState({
-    firstName: "",
+firstName: "",
     lastName: "",
     email: "",
     phone: "",
+    scienceMarks: "",
     gradeLevel: "",
     status: "active"
   });
@@ -23,19 +24,21 @@ const StudentModal = ({ isOpen, onClose, student, mode = "view", onSave }) => {
   useEffect(() => {
     if (student) {
       setFormData({
-        firstName: student.firstName || "",
+firstName: student.firstName || "",
         lastName: student.lastName || "",
         email: student.email || "",
         phone: student.phone || "",
+        scienceMarks: student.scienceMarks || "",
         gradeLevel: student.gradeLevel || "",
         status: student.status || "active"
       });
     } else {
       setFormData({
-        firstName: "",
+firstName: "",
         lastName: "",
         email: "",
         phone: "",
+        scienceMarks: "",
         gradeLevel: "",
         status: "active"
       });
@@ -52,7 +55,10 @@ const StudentModal = ({ isOpen, onClose, student, mode = "view", onSave }) => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "Email is invalid";
     }
-    if (!formData.gradeLevel) newErrors.gradeLevel = "Grade level is required";
+if (!formData.gradeLevel) newErrors.gradeLevel = "Grade level is required";
+    if (formData.scienceMarks && (isNaN(formData.scienceMarks) || formData.scienceMarks < 0 || formData.scienceMarks > 100)) {
+      newErrors.scienceMarks = "Science marks must be a number between 0 and 100";
+    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -174,7 +180,7 @@ const StudentModal = ({ isOpen, onClose, student, mode = "view", onSave }) => {
                     />
                   </FormField>
                   
-                  <FormField label="Phone" error={errors.phone}>
+<FormField label="Phone" error={errors.phone}>
                     <FormField.Input
                       type="tel"
                       value={formData.phone}
@@ -182,6 +188,19 @@ const StudentModal = ({ isOpen, onClose, student, mode = "view", onSave }) => {
                       placeholder="Enter phone number"
                       error={errors.phone}
                       disabled={mode === "view"}
+                    />
+                  </FormField>
+                  
+                  <FormField label="Science Marks" error={errors.scienceMarks}>
+                    <FormField.Input
+                      type="number"
+                      value={formData.scienceMarks}
+                      onChange={(e) => handleInputChange("scienceMarks", e.target.value)}
+                      placeholder="Enter science marks (0-100)"
+                      error={errors.scienceMarks}
+                      disabled={mode === "view"}
+                      min="0"
+                      max="100"
                     />
                   </FormField>
                   

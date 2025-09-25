@@ -20,7 +20,8 @@ export const studentsApi = {
           {"field": {"Name": "enrollment_date_c"}},
           {"field": {"Name": "status_c"}},
           {"field": {"Name": "grade_level_c"}},
-          {"field": {"Name": "gpa_c"}}
+{"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "science_marks_c"}}
         ],
         orderBy: [{"fieldName": "Id", "sorttype": "DESC"}],
         pagingInfo: {"limit": 100, "offset": 0}
@@ -49,7 +50,8 @@ export const studentsApi = {
         enrollmentDate: student.enrollment_date_c || '',
         status: student.status_c || 'active',
         gradeLevel: student.grade_level_c || '',
-        gpa: student.gpa_c || 0.0
+gpa: student.gpa_c || 0.0,
+        scienceMarks: student.science_marks_c || 0
       }));
     } catch (error) {
       console.error("Error fetching students:", error?.response?.data?.message || error);
@@ -76,7 +78,8 @@ export const studentsApi = {
           {"field": {"Name": "enrollment_date_c"}},
           {"field": {"Name": "status_c"}},
           {"field": {"Name": "grade_level_c"}},
-          {"field": {"Name": "gpa_c"}}
+{"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "science_marks_c"}}
         ]
       };
 
@@ -97,7 +100,8 @@ export const studentsApi = {
         enrollmentDate: student.enrollment_date_c || '',
         status: student.status_c || 'active',
         gradeLevel: student.grade_level_c || '',
-        gpa: student.gpa_c || 0.0
+gpa: student.gpa_c || 0.0,
+        scienceMarks: student.science_marks_c || 0
       };
     } catch (error) {
       console.error(`Error fetching student ${id}:`, error?.response?.data?.message || error);
@@ -125,7 +129,8 @@ export const studentsApi = {
           enrollment_date_c: new Date().toISOString(),
           status_c: studentData.status || 'active',
           grade_level_c: studentData.gradeLevel,
-          gpa_c: 0.0
+gpa_c: 0.0,
+          science_marks_c: studentData.scienceMarks || 0
         }]
       };
 
@@ -161,7 +166,8 @@ export const studentsApi = {
             enrollmentDate: createdStudent.enrollment_date_c || '',
             status: createdStudent.status_c || 'active',
             gradeLevel: createdStudent.grade_level_c || '',
-            gpa: createdStudent.gpa_c || 0.0
+gpa: createdStudent.gpa_c || 0.0,
+            scienceMarks: createdStudent.science_marks_c || 0
           };
         }
       }
@@ -192,7 +198,8 @@ export const studentsApi = {
           phone_c: studentData.phone || '',
           status_c: studentData.status,
           grade_level_c: studentData.gradeLevel,
-          gpa_c: studentData.gpa || 0.0
+gpa_c: studentData.gpa || 0.0,
+          science_marks_c: studentData.scienceMarks || 0
         }]
       };
 
@@ -227,8 +234,9 @@ export const studentsApi = {
             phone: updatedStudent.phone_c || '',
             enrollmentDate: updatedStudent.enrollment_date_c || '',
             status: updatedStudent.status_c || 'active',
-            gradeLevel: updatedStudent.grade_level_c || '',
-            gpa: updatedStudent.gpa_c || 0.0
+gradeLevel: updatedStudent.grade_level_c || '',
+            gpa: updatedStudent.gpa_c || 0.0,
+            scienceMarks: updatedStudent.science_marks_c || 0
           };
         }
       }
@@ -297,7 +305,8 @@ export const studentsApi = {
           {"field": {"Name": "enrollment_date_c"}},
           {"field": {"Name": "status_c"}},
           {"field": {"Name": "grade_level_c"}},
-          {"field": {"Name": "gpa_c"}}
+{"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "science_marks_c"}}
         ],
         whereGroups: [{
           "operator": "OR",
@@ -353,7 +362,8 @@ export const studentsApi = {
         enrollmentDate: student.enrollment_date_c || '',
         status: student.status_c || 'active',
         gradeLevel: student.grade_level_c || '',
-        gpa: student.gpa_c || 0.0
+gpa: student.gpa_c || 0.0,
+        scienceMarks: student.science_marks_c || 0
       }));
     } catch (error) {
       console.error("Error searching students:", error?.response?.data?.message || error);
@@ -382,7 +392,8 @@ export const studentsApi = {
           {"field": {"Name": "enrollment_date_c"}},
           {"field": {"Name": "status_c"}},
           {"field": {"Name": "grade_level_c"}},
-          {"field": {"Name": "gpa_c"}}
+{"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "science_marks_c"}}
         ],
         where: [{"FieldName": "status_c", "Operator": "EqualTo", "Values": [status]}],
         orderBy: [{"fieldName": "Id", "sorttype": "DESC"}],
@@ -410,7 +421,8 @@ export const studentsApi = {
         enrollmentDate: student.enrollment_date_c || '',
         status: student.status_c || 'active',
         gradeLevel: student.grade_level_c || '',
-        gpa: student.gpa_c || 0.0
+gpa: student.gpa_c || 0.0,
+        scienceMarks: student.science_marks_c || 0
       }));
     } catch (error) {
       console.error("Error filtering students by status:", error?.response?.data?.message || error);
@@ -439,7 +451,8 @@ export const studentsApi = {
           {"field": {"Name": "enrollment_date_c"}},
           {"field": {"Name": "status_c"}},
           {"field": {"Name": "grade_level_c"}},
-          {"field": {"Name": "gpa_c"}}
+{"field": {"Name": "gpa_c"}},
+          {"field": {"Name": "science_marks_c"}}
         ],
         where: [{"FieldName": "grade_level_c", "Operator": "EqualTo", "Values": [gradeLevel]}],
         orderBy: [{"fieldName": "Id", "sorttype": "DESC"}],
@@ -467,7 +480,8 @@ export const studentsApi = {
         enrollmentDate: student.enrollment_date_c || '',
         status: student.status_c || 'active',
         gradeLevel: student.grade_level_c || '',
-        gpa: student.gpa_c || 0.0
+gpa: student.gpa_c || 0.0,
+        scienceMarks: student.science_marks_c || 0
       }));
     } catch (error) {
       console.error("Error filtering students by grade level:", error?.response?.data?.message || error);
