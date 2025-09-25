@@ -10,9 +10,9 @@ import ErrorPage from '@/components/pages/ErrorPage';
 import StudentsPage from "@/components/pages/StudentsPage";
 import GradesPage from "@/components/pages/GradesPage";
 import ClassesPage from "@/components/pages/ClassesPage";
+import CurriculumActivitiesPage from "@/components/pages/CurriculumActivitiesPage";
 import ReportsPage from "@/components/pages/ReportsPage";
 import SettingsPage from "@/components/pages/SettingsPage";
-
 // Create auth context
 export const AuthContext = createContext(null);
 
@@ -117,7 +117,7 @@ function App() {
   
   return (
     <AuthContext.Provider value={authMethods}>
-      <Routes>
+<Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/callback" element={<Callback />} />
@@ -125,6 +125,7 @@ function App() {
         <Route path="/" element={<StudentsPage />} />
         <Route path="/grades" element={<GradesPage />} />
         <Route path="/classes" element={<ClassesPage />} />
+        <Route path="/curriculum-activities" element={<CurriculumActivitiesPage />} />
         <Route path="/reports" element={<ReportsPage />} />
         <Route path="/settings" element={<SettingsPage />} />
       </Routes>
