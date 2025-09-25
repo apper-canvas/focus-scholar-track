@@ -33,8 +33,7 @@ try {
           apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
         });
 
-
-        await apperClient.functions.invoke(import.meta.env.VITE_SEND_STUDENT_WELCOME_EMAIL, {
+        await apperClient.functions.invoke('send-student-welcome-email', {
           body: { studentData: newStudent },
           headers: {
             'Content-Type': 'application/json'
