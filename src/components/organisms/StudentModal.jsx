@@ -64,11 +64,22 @@ if (!formData.gradeLevel) newErrors.gradeLevel = "Grade level is required";
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+const handleSubmit = (e) => {
     e.preventDefault();
     if (!validateForm()) return;
     
-    onSave(formData);
+    // Transform form data to match database field names
+    const transformedData = {
+      first_name_c: formData.firstName,
+      last_name_c: formData.lastName,
+      email_c: formData.email,
+      phone_c: formData.phone,
+      science_marks_c: formData.scienceMarks ? parseFloat(formData.scienceMarks) : null,
+      grade_level_c: formData.gradeLevel,
+      status_c: formData.status
+    };
+    
+    onSave(transformedData);
     toast.success(student ? "Student updated successfully" : "Student created successfully");
     onClose();
   };
