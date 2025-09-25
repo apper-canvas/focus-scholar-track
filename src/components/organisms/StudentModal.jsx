@@ -9,13 +9,13 @@ import { toast } from "react-toastify";
 import { format } from "date-fns";
 
 const StudentModal = ({ isOpen, onClose, student, mode = "view", onSave }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
 firstName: "",
     lastName: "",
     email: "",
     phone: "",
     scienceMarks: "",
-    gradeLevel: "",
+    gradeLevel: "10th Grade",
     status: "active"
   });
   const [errors, setErrors] = useState({});
@@ -33,13 +33,13 @@ firstName: student.firstName || "",
         status: student.status || "active"
       });
     } else {
-      setFormData({
+setFormData({
 firstName: "",
         lastName: "",
         email: "",
         phone: "",
         scienceMarks: "",
-        gradeLevel: "",
+        gradeLevel: "10th Grade",
         status: "active"
       });
     }
