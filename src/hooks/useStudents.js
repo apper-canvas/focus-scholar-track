@@ -31,15 +31,14 @@ try {
         const apperClient = new ApperClient({
           apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
           apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-        });
+});
 
-        await apperClient.functions.invoke('send-student-welcome-email', {
+        await apperClient.functions.invoke(import.meta.env.VITE_SEND_STUDENT_WELCOME_EMAIL, {
           body: { studentData: newStudent },
           headers: {
             'Content-Type': 'application/json'
           }
         });
-        
         // Show success message for email
         const { toast } = await import('react-toastify');
         toast.success(`Welcome email sent to ${newStudent.email}`);
