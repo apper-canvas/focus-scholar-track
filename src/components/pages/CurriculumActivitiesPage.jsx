@@ -15,6 +15,7 @@ import SearchBar from '@/components/molecules/SearchBar';
 import FilterSelect from '@/components/molecules/FilterSelect';
 import ApperIcon from '@/components/ApperIcon';
 import { curriculumActivitiesApi } from '@/services/api/curriculumActivitiesApi';
+import { filesApi } from '@/services/api/filesApi';
 import { cn } from '@/utils/cn';
 
 const CurriculumActivitiesPage = () => {
@@ -30,8 +31,10 @@ const CurriculumActivitiesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingActivity, setEditingActivity] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [activityToDelete, setActivityToDelete] = useState(null);
+const [activityToDelete, setActivityToDelete] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [files, setFiles] = useState([]);
+  const [isUploadingFile, setIsUploadingFile] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -46,8 +49,9 @@ const CurriculumActivitiesPage = () => {
     status: 'Planning',
     instructor: '',
     participants: '',
-    materials: '',
-    objectives: ''
+materials: '',
+    objectives: '',
+    attachedFiles: []
   });
 
   // Options for dropdowns
@@ -171,8 +175,9 @@ const CurriculumActivitiesPage = () => {
       status: 'Planning',
       instructor: '',
       participants: '',
-      materials: '',
-      objectives: ''
+materials: '',
+      objectives: '',
+      attachedFiles: []
     });
     setEditingActivity(null);
   };
@@ -195,9 +200,11 @@ const CurriculumActivitiesPage = () => {
       status: activity.status || 'Planning',
       instructor: activity.instructor || '',
       participants: activity.participants ? activity.participants.toString() : '',
-      materials: activity.materials || '',
-      objectives: activity.objectives || ''
+materials: activity.materials || '',
+      objectives: activity.objectives || '',
+      attachedFiles: []
     });
+    loadActivityFiles(activity.Id);
     setEditingActivity(activity);
     setIsModalOpen(true);
   };
@@ -268,7 +275,111 @@ const CurriculumActivitiesPage = () => {
     } finally {
       setIsDeleteModalOpen(false);
       setActivityToDelete(null);
+}
+  };
+
+  const loadActivityFiles = async (activityId) => {
+    try {
+      const response = await filesApi.getByEntity('curriculum_activity', activityId);
+      if (response.success) {
+        setFiles(response.data || []);
+        setFormData(prev => ({
+          ...prev,
+          attachedFiles: response.data || []
+        }));
+      }
+    } catch (error) {
+      console.error('Error loading activity files:', error);
     }
+  };
+
+  const handleFileUpload = async (event) => {
+    const selectedFiles = Array.from(event.target.files);
+    if (selectedFiles.length === 0) return;
+
+    setIsUploadingFile(true);
+    
+    try {
+      const uploadPromises = selectedFiles.map(async (file) => {
+        // Convert file to base64 for OpenAI analysis (if it's an image)
+        let imageData = null;
+        if (file.type.startsWith('image/')) {
+          imageData = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const base64 = e.target.result.split(',')[1];
+              resolve(base64);
+            };
+            reader.readAsDataURL(file);
+          });
+        }
+
+        const fileData = {
+          Name: file.name,
+          file_name_c: file.name,
+          file_type_c: file.type,
+          file_size_c: file.size,
+          imageData: imageData
+        };
+
+        return await filesApi.uploadWithDescription(
+          fileData, 
+          'curriculum_activity',
+          editingActivity?.Id
+        );
+      });
+
+      const results = await Promise.all(uploadPromises);
+      const successful = results.filter(r => r.success);
+      const failed = results.filter(r => !r.success);
+
+      if (successful.length > 0) {
+        toast.success(`${successful.length} file(s) uploaded successfully`);
+        setFiles(prev => [...prev, ...successful.map(r => r.data)]);
+        setFormData(prev => ({
+          ...prev,
+          attachedFiles: [...prev.attachedFiles, ...successful.map(r => r.data)]
+        }));
+      }
+
+      if (failed.length > 0) {
+        toast.error(`${failed.length} file(s) failed to upload`);
+      }
+    } catch (error) {
+      toast.error('File upload failed');
+      console.error('Error uploading files:', error);
+    } finally {
+      setIsUploadingFile(false);
+      // Reset file input
+      event.target.value = '';
+    }
+  };
+
+  const handleRemoveFile = async (fileId) => {
+    try {
+      const response = await filesApi.delete(fileId);
+      if (response.success) {
+        toast.success('File removed successfully');
+        setFiles(prev => prev.filter(f => f.Id !== fileId));
+        setFormData(prev => ({
+          ...prev,
+          attachedFiles: prev.attachedFiles.filter(f => f.Id !== fileId)
+        }));
+      } else {
+        toast.error('Failed to remove file');
+      }
+    } catch (error) {
+      toast.error('Failed to remove file');
+      console.error('Error removing file:', error);
+    }
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   const getStatusBadgeVariant = (status) => {
@@ -668,10 +779,82 @@ const CurriculumActivitiesPage = () => {
                   onChange={handleInputChange}
                   placeholder="Learning objectives and goals..."
                   rows={2}
-                />
+/>
               </div>
 
-              <div className="flex justify-end space-x-3 pt-4">
+              {/* File Upload Section */}
+              <div>
+                <Label htmlFor="fileUpload">Attachments</Label>
+                <div className="mt-2">
+                  <input
+                    type="file"
+                    id="fileUpload"
+                    multiple
+                    accept="image/*,.pdf,.doc,.docx,.txt"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    disabled={isUploadingFile}
+                  />
+                  <div className="border-2 border-dashed border-secondary-300 rounded-lg p-4 text-center hover:border-secondary-400 transition-colors">
+                    <ApperIcon name="Upload" size={24} className="mx-auto text-secondary-400 mb-2" />
+                    <div className="text-sm text-secondary-600 mb-2">
+                      <label 
+                        htmlFor="fileUpload" 
+                        className="font-medium text-primary-600 hover:text-primary-500 cursor-pointer"
+                      >
+                        {isUploadingFile ? 'Uploading...' : 'Click to upload'}
+                      </label>
+                      {' '}or drag and drop
+                    </div>
+                    <p className="text-xs text-secondary-500">
+                      Images will be automatically analyzed with AI
+                    </p>
+                  </div>
+                </div>
+
+                {/* File List */}
+                {formData.attachedFiles.length > 0 && (
+                  <div className="mt-3 space-y-2">
+                    <h4 className="text-sm font-medium text-secondary-700">Attached Files:</h4>
+                    {formData.attachedFiles.map((file) => (
+                      <div key={file.Id} className="flex items-center justify-between p-2 bg-secondary-50 rounded border">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-2">
+                            <ApperIcon 
+                              name={file.file_type_c?.startsWith('image/') ? 'Image' : 'File'} 
+                              size={16} 
+                              className="text-secondary-500 flex-shrink-0" 
+                            />
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm font-medium text-secondary-900 truncate">
+                                {file.file_name_c}
+                              </p>
+                              <p className="text-xs text-secondary-500">
+                                {formatFileSize(file.file_size_c || 0)}
+                              </p>
+                              {file.openai_description_c && (
+                                <p className="text-xs text-primary-600 italic mt-1">
+                                  AI: {file.openai_description_c}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleRemoveFile(file.Id)}
+                          className="text-error-600 hover:text-error-700 flex-shrink-0 ml-2"
+                        >
+                          <ApperIcon name="X" size={14} />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+<div className="flex justify-end space-x-3 pt-6 border-t border-secondary-200">
                 <Button type="button" variant="ghost" onClick={closeModal}>
                   Cancel
                 </Button>
