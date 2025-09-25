@@ -26,12 +26,12 @@ const createStudent = async (studentData) => {
       setStudents(prev => [...prev, newStudent]);
       
       // Send welcome email to the student
-try {
+      try {
         const { ApperClient } = window.ApperSDK;
         const apperClient = new ApperClient({
           apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
           apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
-});
+        });
 
         await apperClient.functions.invoke(import.meta.env.VITE_SEND_STUDENT_WELCOME_EMAIL, {
           body: { studentData: newStudent },
@@ -47,6 +47,32 @@ try {
         // Show error message but don't fail the student creation
         const { toast } = await import('react-toastify');
         toast.warning(`Student created successfully, but welcome email could not be sent to ${newStudent.email}`);
+      }
+
+      // Check if science marks are greater than 75 and send achievement email
+      if (newStudent.scienceMarks && newStudent.scienceMarks > 75) {
+        try {
+          const { ApperClient } = window.ApperSDK;
+          const apperClient = new ApperClient({
+            apperProjectId: import.meta.env.VITE_APPER_PROJECT_ID,
+            apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
+          });
+
+          await apperClient.functions.invoke(import.meta.env.VITE_SEND_SCIENCE_ACHIEVEMENT_EMAIL, {
+            body: { studentData: newStudent },
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          // Show success message for science achievement email
+          const { toast } = await import('react-toastify');
+          toast.success(`🎉 Science achievement email sent to ${newStudent.email} (Score: ${newStudent.scienceMarks}/100)`);
+        } catch (achievementEmailError) {
+          console.error('Failed to send science achievement email:', achievementEmailError);
+          // Show error message but don't fail the student creation
+          const { toast } = await import('react-toastify');
+          toast.warning(`Student created successfully, but science achievement email could not be sent to ${newStudent.email}`);
+        }
       }
       
       return newStudent;
